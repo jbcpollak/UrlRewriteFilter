@@ -66,10 +66,16 @@ public class Status {
     private UrlRewriteFilter urlRewriteFilter;
 
     public Status(Conf conf) {
+    	if (conf == null) {
+    		conf = new Conf();
+    	}
         this.conf = conf;
     }
 
     public Status(Conf conf, UrlRewriteFilter urlRewriteFilter) {
+    	if (conf == null) {
+    		conf = new Conf();
+    	}
         this.conf = conf;
         this.urlRewriteFilter = urlRewriteFilter;
     }
