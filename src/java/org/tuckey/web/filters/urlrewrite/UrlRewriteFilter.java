@@ -403,6 +403,7 @@ public class UrlRewriteFilter implements Filter {
         if (isTimeToReloadConf()) {
             reloadConf();
         }
+        
         return urlRewriter;
     }
 

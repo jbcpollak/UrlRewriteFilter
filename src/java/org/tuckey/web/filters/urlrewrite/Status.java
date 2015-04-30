@@ -66,16 +66,10 @@ public class Status {
     private UrlRewriteFilter urlRewriteFilter;
 
     public Status(Conf conf) {
-    	if (conf == null) {
-    		conf = new Conf();
-    	}
         this.conf = conf;
     }
 
     public Status(Conf conf, UrlRewriteFilter urlRewriteFilter) {
-    	if (conf == null) {
-    		conf = new Conf();
-    	}
         this.conf = conf;
         this.urlRewriteFilter = urlRewriteFilter;
     }
@@ -317,7 +311,11 @@ public class Status {
         SimpleDateFormat s = new SimpleDateFormat();
         println("<html>");
         println("<head>");
-        println("<title>UrlRewriteFilter configuration overview for " + conf.getFileName() + "</title>");
+        if (conf == null) {
+	        println("<title>UrlRewriteFilter configuration overview: error loading config</title>");
+        } else {
+        	println("<title>UrlRewriteFilter configuration overview for " + conf.getFileName() + "</title>");
+        }
         println("<style type=\"text/css\">");
         InputStream is = Status.class.getResourceAsStream("doc/doc.css");
         if (is == null) {
@@ -346,10 +344,12 @@ public class Status {
         }
         if (!conf.isOk()) {
             println("<h3 class=\"err\">ERROR: UrlRewriteFilter NOT ACTIVE</h3>");
+            println("<p>Conf");
+            if (conf.isLoadedFromFile()) {
+            	println("file <code>" + conf.getFileName() + "</code>");
+            }
+            println("loaded <em>" + conf.getLoadedDate() + "</em>.</p>");
         }
-        println("<p>Conf");
-        if (conf.isLoadedFromFile()) println("file <code>" + conf.getFileName() + "</code>");
-        println("loaded <em>" + conf.getLoadedDate() + "</em>.</p>");
         if (urlRewriteFilter != null) {
             if (urlRewriteFilter.isConfReloadCheckEnabled()) {
                 Date nextReloadCheckDate = new Date(urlRewriteFilter.getConfReloadLastCheck().getTime() +
